@@ -1,20 +1,41 @@
 import React from "react";
+import {connect} from "react-redux"
+import {Link} from "react-router-dom";
 
-function UsersListContainer(){
+function UsersListContainer(props) {
     return (
         <div>
             <p>
                 User List
             </p>
-            <ul>
-                <li>ll</li>
-            </ul>
-            <a className="App-link" href="">
+            <div>
+                {
+                    props.users && props.users.length > 0 ?
+                        (
+                            <ul>
+                                {props.users.map(user => <li key={user.id}>{user.name}</li>)}
+                            </ul>
+                        )
+                        :
+                        (
+                            <p>
+                                Empty list
+                            </p>
+                        )
+                }
+            </div>
+            <Link to={"/create"}>
                 Create new user
-            </a>
+            </Link>
         </div>
     );
 }
 
 
-export default UsersListContainer
+const mapStateToProps = state => {
+    return {
+        users: state.users
+    };
+};
+
+export default connect(mapStateToProps)(UsersListContainer);
